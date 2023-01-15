@@ -2,18 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import "./styles.css";
 
 const App = () => {
-  const [pin, setPin] = useState(new Array(4).fill(""));
+  const [pin, setPin] = useState<string[]>(new Array(4).fill(""));
   const [secretMode, setSecretMode] = useState(true);
   const [message, setMessage] = useState("");
   const defaultCode = "1234";
 
-  const handleChange = (element, index) => {
-    if (isNaN(element.value)) return false;
+  const handleChange = (element: HTMLInputElement, index: number) => {
+    if (isNaN(Number(element.value))) return false;
 
     setPin([...pin.map((d, idx) => (idx === index ? element.value : d))]);
 
     if (element.nextSibling) {
-      element.nextSibling.focus();
+      (element.nextSibling as HTMLInputElement).focus();
     }
   };
 
@@ -27,20 +27,22 @@ const App = () => {
     }
   };
 
-  const inputRefs = useRef([]);
+  const inputRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
     const firstEmptyIndex = pin.findIndex((i) => i === "");
-    if (inputRefs.current[firstEmptyIndex])
+    if (inputRefs.current[firstEmptyIndex]) {
       inputRefs.current[firstEmptyIndex].focus();
+    }
   }, [pin]);
 
   useEffect(() => {
-    inputRefs.current.forEach((input) => {
+    const inputs = [...inputRefs.current];
+    inputs.forEach((input) => {
       input.addEventListener("paste", handlePaste);
     });
     return () => {
-      inputRefs.current.forEach((input) => {
+      inputs.forEach((input) => {
         input.removeEventListener("paste", handlePaste);
       });
     };
@@ -70,10 +72,12 @@ const App = () => {
                 className="pin-field"
                 type={secretMode ? "password" : "text"}
                 name="pin"
-                maxLength="1"
+                maxLength={1}
                 key={index}
                 value={data}
-                onChange={(e) => handleChange(e.target, index)}
+                onChange={(e) =>
+                  handleChange(e.target as HTMLInputElement, index)
+                }
                 onFocus={(e) => e.target.select()}
               />
             );
