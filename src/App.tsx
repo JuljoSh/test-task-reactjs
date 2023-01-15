@@ -17,10 +17,10 @@ const App = () => {
     }
   };
 
-  const handlePaste = (e) => {
+  const handlePaste = (e: ClipboardEvent) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData("text/plain");
-    if (!isNaN(pastedText)) {
+    if (!isNaN(Number(pastedText))) {
       let pastedArray = pastedText.split("");
       pastedArray = pastedArray.slice(0, 4);
       setPin(pastedArray);
