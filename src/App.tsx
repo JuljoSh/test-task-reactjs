@@ -63,7 +63,7 @@ const App = () => {
     <>
       <div>
         <div className="pin-code centered">
-          <p>Enter PIN</p>
+          <p>Enter PIN by JuljoShahini</p>
 
           {pin.map((data, index) => {
             return (
